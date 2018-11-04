@@ -1,0 +1,141 @@
+<html>
+    <head>
+        <title>StudyTools</title>
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/font-awesome.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="//oss.maxcdn.com/jquery.form/3.50/jquery.form.min.js"></script>
+        <script src="js/smoothscroll.js"></script>
+
+        <script type="text/javascript">
+
+            $(function() {
+                $(document).ready(function(){
+                    var percent = $('#percent');
+                    var status = $('#status');
+
+                    $('form').ajaxForm({
+                        beforeSend: function() {
+                            status.empty();
+                            var percentVal = '0%';
+                            percent.html(percentVal);
+                        },
+                        uploadProgress: function(event, position, total, percentComplete) {
+                            var percentVal = percentComplete + '%';
+                            percent.html(percentVal);
+
+				            uploader.value = percentComplete;
+                        },
+                        complete: function(xhr) {
+                                status.html(xhr.responseText);
+                                uploader.value = 100;                           
+                            }
+                        });
+                    });
+            });
+        </script>
+        
+        <script>
+            function populate(s1){
+                var s1 = document.getElementById(s1);
+                
+                if(s1.value == "semester5"){
+                document.getElementById("subject").style.display = "block";
+                }
+            
+            }
+            
+            function populate2(s2){
+                var s2 = document.getElementById(s2);
+                
+                if(s2.value == "sooad" || s2.value == "mp" || s2.value == "mp" || s2.value == "cn" || s2.value == "bce"){
+                    document.getElementById("type").style.display = "block";
+                }
+                send();
+                
+            }
+            function send(){
+            
+            var sub = document.getElementById('subject').options[document.getElementById('subject').selectedIndex];
+
+                sub = sub.id;
+                alert(sub);
+                
+            $.post('upload.php', {postsub:sub},
+            
+                function (data){
+                    $('#result').html(data);
+                }
+            ); 
+            }
+            
+            
+            
+</script>
+    </head>
+    <body>
+        <header id="header">
+            <a href="index.html" class="logo"><img src="images/menubar.png"></a>
+            <a href="index.html" class="name">Study Tools</a>
+            <a href="login.html" class="btn login" style="float:right; margin-top:1%; margin-right:1%">LOGOUT</a>
+
+        </header>
+
+        <section class="sectionsem">
+            <div class="wrapper">
+
+            <progress value="0" max="100" id="uploader" style="width:100%">0%</progress>
+            <br><br>                <div id='percent'></div>
+            <div class='status'></div>
+
+            <div align="center" style="margin-top:10%;"> 		
+            <form action="upload.php" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file">
+                <input type="submit" name="submit" value="upload">
+            
+			
+			
+			
+            <div><h2>Select the type where the file belongs.</h2></div>
+            <div class="wrapper">   
+
+				<!--<script src="upload.js"></script>-->
+                <select id="semselect" name="semselect" onchange="populate('semselect')">
+                    <option value="">Choose semester</option>  
+                    <option value="semester1" id="semester1">Semester 1</option>
+                    <option value="semester2" id="semester2">Semester 2</option>
+                    <option value="semester3" id="semester3">Semester 3</option>
+                    <option value="semester4" id="semester4">Semester 4</option>
+                    <option value="semester5" id="semester5">Semester 5</option>
+                    <option value="semester6" id="semester6">Semester 6</option>
+                    <option value="semester7" id="semester7">Semester 7</option>
+                    <option value="semester8" id="semester8">Semester 8</option>
+                </select>
+                <br><br>
+                <select style="display: none" id="subject" name="subject" onchange="populate2('subject')">
+                    <option value="">Choose Subject</option>  
+                    <option value="sooad" id="sooad">SOOAD</option>
+                    <option value="mp" id="mp">Microprocessor</option>
+                    <option value="cn" id="cn">Computer Networks</option>
+                    <option value="bce" id="bce">BCE</option>
+
+                </select>
+                <br><br>
+                <select style="display: none" id="type" name="type">
+                    <option value="">Choose Category</option>  
+                    <option value="mupapers" id="mupapers">MU Papers</option>
+                    <option value="iat" id="iat">IAT Papers</option>
+                    <option value="ppt" id="ppt">Module PPTs</option>
+                </select>
+                
+            </div>
+                <div id="result"></div>
+		</form>			
+                <br><br><br>
+            <a href="sem_five.php">Take me there</a>
+        </div>
+        </div>
+		</section>       
+
+    </body>
+</html>

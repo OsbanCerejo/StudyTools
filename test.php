@@ -1,0 +1,5 @@
+<?php
+
+$subject = $POST['postsub'];
+
+?>
